@@ -1,3 +1,7 @@
+# Floobits
+*.floo
+*.flooignore
+
 # Batch file
 *.bat
 
