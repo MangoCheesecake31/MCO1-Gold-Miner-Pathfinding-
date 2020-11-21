@@ -66,26 +66,26 @@ public class Miner {
         try {
 	        switch (DIRECTIONS[front]) {
 	        	case "UP" -> {
-                    map.updateCell(x, y, "EMPTY");
                     map.updateCell(x, y - 1, "MINER");
+                    map.updateCell(x, y, "EMPTY");
 	        	    y -= 1;
 	        	}
 
                 case "RIGHT" -> {
-                    map.updateCell(x, y, "EMPTY");
                     map.updateCell(x + 1, y, "MINER");
+                    map.updateCell(x, y, "EMPTY");
                     x += 1;
                 }
 
                 case "DOWN" -> {
-                    map.updateCell(x, y, "EMPTY");
                     map.updateCell(x, y + 1, "MINER");
+                    map.updateCell(x, y, "EMPTY");
                     y += 1;
                 }
 
                 case "LEFT" -> {
-                    map.updateCell(x, y, "EMPTY");
                     map.updateCell(x - 1, y, "MINER");
+                    map.updateCell(x, y, "EMPTY");
                     x -= 1;
                 }
 	        }
