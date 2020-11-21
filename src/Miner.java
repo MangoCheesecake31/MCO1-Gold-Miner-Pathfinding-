@@ -5,7 +5,7 @@ public class Miner {
 
   	private int front = 1;
   	private final String[] DIRECTIONS = {"UP", "RIGHT", "DOWN", "LEFT"};
-  	private Grid map;
+  	private final Grid map;
 
   	private int scan_count;
   	private int move_count;
@@ -66,10 +66,28 @@ public class Miner {
         try {
 	        switch (DIRECTIONS[front]) {
 	        	case "UP" -> {
-	        		if (map.getCell(x, y - 1).getType().equals("EMPTY")) {
-
-	        		}
+                    map.updateCell(x, y, "EMPTY");
+                    map.updateCell(x, y - 1, "MINER");
+	        	    y -= 1;
 	        	}
+
+                case "RIGHT" -> {
+                    map.updateCell(x, y, "EMPTY");
+                    map.updateCell(x + 1, y, "MINER");
+                    x += 1;
+                }
+
+                case "DOWN" -> {
+                    map.updateCell(x, y, "EMPTY");
+                    map.updateCell(x, y + 1, "MINER");
+                    y += 1;
+                }
+
+                case "LEFT" -> {
+                    map.updateCell(x, y, "EMPTY");
+                    map.updateCell(x - 1, y, "MINER");
+                    x -= 1;
+                }
 	        }
         } catch (ArrayIndexOutOfBoundsException e) {
         	System.out.println("Out of Bounds!");

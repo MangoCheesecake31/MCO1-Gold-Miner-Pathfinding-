@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Driver {
 	public static void main(String[] args) {
 		System.out.println("| ------------------------------ MCO1 Gold Miner ------------------------------ |");
-		System.out.print("| Map Specs: ");
+		System.out.println("| Map Specs: ");
 		Scanner sc = new Scanner(System.in);
 
 		int map_size = sc.nextInt();	// Size of Map 8 to 64 only
