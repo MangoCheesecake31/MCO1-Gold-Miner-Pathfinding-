@@ -16,7 +16,7 @@ public class Driver {
 
 		// Grid Instance
 		Grid map = new Grid(map_size);
-		map.updateCell(cell_x, cell_y, "GOLD");
+		map.updateCell(cell_x, cell_y, "GOLD", "GOLD");
 
 		// Other Cells
 		for (int i = 0; i < num_cell; i++) {
@@ -24,7 +24,7 @@ public class Driver {
 			cell_y = sc.nextInt();
 			type = sc.next();
 
-			map.updateCell(cell_x, cell_y, type);
+			map.updateCell(cell_x, cell_y, type, type);
 		}
 
 		cls();
@@ -39,6 +39,16 @@ public class Driver {
 
 			map.print();
 
+			// Status
+			if (player.checkWin()) {
+				System.out.println("You Win! You found the gold :)");
+				break;
+			} else if (player.checkLose()) {
+				System.out.println("You Lose! You fell into a pit :(");
+				break;
+			}
+
+			// Controls
 			switch (sc.next().toUpperCase().charAt(0)) {
 				case 'M': player.move();
 					break;
@@ -52,7 +62,7 @@ public class Driver {
 					break;
 				default:
 			}
-
+			
 			cls();
 
 		}

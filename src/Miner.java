@@ -24,7 +24,7 @@ public class Miner {
     	int b = y;
         switch (DIRECTIONS[front]) {
             case "UP" -> {
-                if(b == 0)
+                if (b == 0)
                     return null;
                 else
                     for (; b != 0; b--)
@@ -32,29 +32,29 @@ public class Miner {
                             return map.getCell(a, b).getType();
             }
             case "RIGHT" -> {
-                if(a == map.size)
+                if (a == map.size)
                     return null;
                 else
-                    for(; a != map.size - 1; a++)
-                        if(!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
+                    for (; a != map.size - 1; a++)
+                        if (!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
                             return map.getCell(a, b).getType();
             }
 
             case "DOWN" -> {
-                if(b == map.size)
+                if (b == map.size)
                     return null;
                 else
-                    for(; b != map.size - 1; b++)
-                        if(!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
+                    for (; b != map.size - 1; b++)
+                        if (!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
                             return map.getCell(a, b).getType();
             }
 
             case "LEFT" -> {
-                if(a == 0)
+                if (a == 0)
                     return null;
                 else
-                    for(; a != map.size - 1; a--)
-                        if(!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
+                    for (; a != map.size - 1; a--)
+                        if (!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
                             return map.getCell(a, b).getType();
             }
         }
@@ -67,25 +67,25 @@ public class Miner {
 	        switch (DIRECTIONS[front]) {
 	        	case "UP" -> {
                     map.updateCell(x, y - 1, "MINER");
-                    map.updateCell(x, y, "EMPTY");
+                    map.revertCell(x, y);
 	        	    y -= 1;
 	        	}
 
                 case "RIGHT" -> {
                     map.updateCell(x + 1, y, "MINER");
-                    map.updateCell(x, y, "EMPTY");
+                    map.revertCell(x, y);
                     x += 1;
                 }
 
                 case "DOWN" -> {
                     map.updateCell(x, y + 1, "MINER");
-                    map.updateCell(x, y, "EMPTY");
+                    map.revertCell(x, y);
                     y += 1;
                 }
 
                 case "LEFT" -> {
                     map.updateCell(x - 1, y, "MINER");
-                    map.updateCell(x, y, "EMPTY");
+                    map.revertCell(x, y);
                     x -= 1;
                 }
 	        }
@@ -93,9 +93,7 @@ public class Miner {
         	System.out.println("Out of Bounds!");
         }
     }
-
-
-
+    
     public void rotate() {
     	rotate_count++;
     	front = (front + 1) % 4;
@@ -116,11 +114,15 @@ public class Miner {
     public int getScanCount() {
     	return scan_count;
     }
+
+    public boolean checkWin() {
+        return map.getCell(x, y).getOrigin().equals("GOLD");
+    }
+
+    public boolean checkLose() {
+        return map.getCell(x, y).getOrigin().equals("PIT");
+    }
 }
 
 
 
-// [0, 0] [1, 0] [2, 0] [3, 0]
-// [0, 1] [1, 1] [2, 1] [3, 1]
-// [0, 2] [1, 2] [2, 2] [3, 2]
-// [0, 3] [1, 3] [2, 3] [3, 3]

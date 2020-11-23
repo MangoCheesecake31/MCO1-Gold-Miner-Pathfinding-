@@ -4,7 +4,7 @@ public class Cell {
 	public final int y;
 	
 	private String type;
-	private Cell origin;
+	private String origin;
 	private final String[] VALID_CELL_TYPES = {"MINER", "GOLD", "PIT", "WALL", "BEACON", "EMPTY"};
 
 
@@ -14,6 +14,7 @@ public class Cell {
 		this.y = y;
 
 		setType(type);
+		setOrigin(this.type);
 	}
 
 
@@ -33,11 +34,11 @@ public class Cell {
 		return type;
 	}
 
-	public void setOrigin(Cell origin) {
+	public void setOrigin(String origin) {
 		this.origin = origin;
 	}
 
-	public Cell getOrigin() {
+	public String getOrigin() {
 		return origin;
 	}
 

@@ -21,6 +21,15 @@ public class Grid {
 		grid[x][y].setType(type);
 	}
 
+	public void updateCell(int x, int y, String type, String origin) {
+		grid[x][y].setType(type);
+		grid[x][y].setOrigin(origin);
+	}
+
+	public void revertCell(int x, int y) {
+		grid[x][y].setType(grid[x][y].getOrigin());
+	}
+
 	public void print() {
 		// print edge
 		String edge = "+ ";
