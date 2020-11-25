@@ -32,43 +32,88 @@ public class Driver {
 		Miner player = new Miner(map);
 		String scanned = "null";
 
-		while (true) {
-			System.out.println("| ------------------------------ MCO1 Gold Miner ------------------------------ |");
-			System.out.printf("| Dashboard -> Rotates: %3d  Moves: %3d  Scans: %3d  Face: %5s                |\n", player.getRotateCount(), player.getMoveCount(), player.getScanCount(), player.getFront());
-			System.out.printf("| Last Scanned: %6s                                                          |\n", scanned);
+		sc.nextLine();
+		System.out.print("MODE (A - Auto | C - Control)	:");
 
-			map.print();
+		char mode = sc.next().toUpperCase().charAt(0);
+		if (mode == 'C') {
+			// Player Controlled
+			while (true) {
+				System.out.println("| ------------------------------ MCO1 Gold Miner ------------------------------ |");
+				System.out.printf("| Dashboard -> Rotates: %3d  Moves: %3d  Scans: %3d  Face: %5s                |\n", player.getRotateCount(), player.getMoveCount(), player.getScanCount(), player.getFront());
+				System.out.printf("| Last Scanned: %6s                                                          |\n", scanned);
 
-			// Status
-			if (player.checkWin()) {
-				System.out.println("You Win! You found the gold :)");
-				break;
-			} else if (player.checkLose()) {
-				System.out.println("You Lose! You fell into a pit :(");
-				break;
+				map.print();
+
+				// Status
+				if (player.checkWin()) {
+					System.out.println("You Win! You found the gold :)");
+					break;
+				} else if (player.checkLose()) {
+					System.out.println("You Lose! You fell into a pit :(");
+					break;
+				}
+
+				// Controls
+				switch (sc.next().toUpperCase().charAt(0)) {
+					case 'M': player.move();
+						break;
+					case 'R': player.rotate();
+						break;
+					case 'S': scanned = player.scan();
+						break;
+					case 'E':
+						System.out.println("Terminating Program...");
+						System.exit(0);
+						break;
+					default:
+				}
+				
+				cls();
 			}
+		} else if (mode == 'A') {
+			// Auto Controlled
+			Player auto = new Player(map);
 
-			// Controls
-			switch (sc.next().toUpperCase().charAt(0)) {
-				case 'M': player.move();
+			while (true) {
+				System.out.println("| ------------------------------ MCO1 Gold Miner ------------------------------ |");
+				System.out.printf("| Dashboard -> Rotates: %3d  Moves: %3d  Scans: %3d  Face: %5s                |\n", player.getRotateCount(), player.getMoveCount(), player.getScanCount(), player.getFront());
+				System.out.printf("| Last Scanned: %6s                                                          |\n", scanned);
+
+				map.print();
+
+				// Status
+				if (player.checkWin()) {
+					System.out.println("You Win! You found the gold :)");
 					break;
-				case 'R': player.rotate();
+				} else if (player.checkLose()) {
+					System.out.println("You Lose! You fell into a pit :(");
 					break;
-				case 'S': scanned = player.scan();
-					break;
-				case 'E':
-					System.out.println("Terminating Program...");
-					System.exit(0);
-					break;
-				default:
+				}
+
+				System.out.print("Enter Any Key to Continue...");
+				sc.nextLine();
+
+				// Controls
+				switch (auto.getNextMove()) {
+					case 'M': player.move();
+						break;
+					case 'R': player.rotate();
+						break;
+					case 'S': scanned = player.scan();
+						break;
+					case 'E':
+						System.out.println("Terminating Program...");
+						System.exit(0);
+						break;
+				}
+				
+				cls();
 			}
-			
-			cls();
-
 		}
 	}
 
-	private static void cls() {
+	public static void cls() {
     	try {
 		    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
     	} catch (Exception e) {

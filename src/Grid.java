@@ -13,6 +13,10 @@ public class Grid {
 
 
 	// // // // // Methods
+	public int getSize() {
+		return size;
+	}
+
 	public Cell getCell(int x, int y) {
 		return grid[x][y];
 	}

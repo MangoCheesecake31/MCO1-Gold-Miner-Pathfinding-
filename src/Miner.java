@@ -2,14 +2,15 @@ public class Miner {
     // // // // // Attributes
     public int x = 0;
     public int y = 0;
+  	public static final String[] DIRECTIONS = {"UP", "RIGHT", "DOWN", "LEFT"};
 
   	private int front = 1;
-  	private final String[] DIRECTIONS = {"UP", "RIGHT", "DOWN", "LEFT"};
   	private final Grid map;
 
   	private int scan_count;
   	private int move_count;
   	private int rotate_count;
+
 
     // // // // // Constructors
   	public Miner(Grid map) {
@@ -17,52 +18,27 @@ public class Miner {
   		map.updateCell(0, 0, "MINER");
   	}
 
+
     // // // // // Methods
     public String scan() {
     	scan_count++;
-    	int a = x;
-    	int b = y;
-        switch (DIRECTIONS[front]) {
-            case "UP" -> {
-                if (b == 0)
-                    return null;
-                else
-                    for (; b != 0; b--)
-                        if (!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
-                            return map.getCell(a, b).getType();
-            }
-            case "RIGHT" -> {
-                if (a == map.size)
-                    return null;
-                else
-                    for (; a != map.size - 1; a++)
-                        if (!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
-                            return map.getCell(a, b).getType();
-            }
 
-            case "DOWN" -> {
-                if (b == map.size)
-                    return null;
-                else
-                    for (; b != map.size - 1; b++)
-                        if (!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
-                            return map.getCell(a, b).getType();
+        try {
+            switch (DIRECTIONS[front]) {
+                case "UP":      return map.getCell(x, y - 1).getType();
+                case "RIGHT":   return map.getCell(x + 1, y).getType();
+                case "DOWN":    return map.getCell(x, y + 1).getType();
+                case "LEFT":    return map.getCell(x - 1, y).getType();
             }
-
-            case "LEFT" -> {
-                if (a == 0)
-                    return null;
-                else
-                    for (; a != map.size - 1; a--)
-                        if (!map.getCell(a, b).getType().equals("EMPTY") && !map.getCell(a, b).getType().equals("MINER"))
-                            return map.getCell(a, b).getType();
-            }
+        } catch (ArrayIndexOutOfBoundsException e) {
         }
-
+        
         return null;
     }
 
     public void move() {
+        move_count++;
+        
         try {
 	        switch (DIRECTIONS[front]) {
 	        	case "UP" -> {

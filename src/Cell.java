@@ -5,7 +5,7 @@ public class Cell {
 	
 	private String type;
 	private String origin;
-	private final String[] VALID_CELL_TYPES = {"MINER", "GOLD", "PIT", "WALL", "BEACON", "EMPTY"};
+	private final String[] VALID_CELL_TYPES = {"MINER", "GOLD", "PIT", "BEACON", "EMPTY"};
 
 
 	// // // // // Constructors 
@@ -49,7 +49,6 @@ public class Cell {
 				case "PIT": 	return "P";
 				case "MINER": 	return "M";
 				case "BEACON":	return "B";
-				case "WALL":	return "W";
 				case "GOLD":	return "G";
 				case "EMPTY":	return " ";
 				default:		return " ";
