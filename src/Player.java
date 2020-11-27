@@ -131,7 +131,16 @@ public class Player {
 
 	public void backTrackManeuver(String previous) {
 		String back_track = Miner.DIRECTIONS[(directionIndexOf(previous) + 2) % 4];
-		moveManeuver(back_track);
+		
+		while (!(back_track.equals(agent.getFront()))) {
+			agent.rotate();
+			move_queue.add('R');
+		}
+
+		traversed[agent.x][agent.y] = true;
+
+		agent.move();
+		move_queue.add('M');
 	}
 
 	public void moveManeuver(String direction) {
