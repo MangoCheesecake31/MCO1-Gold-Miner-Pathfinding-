@@ -1,0 +1,15 @@
+/* Assuming you are in src */
+
+set PATH_TO_FX="C:\Program Files\Java\javafx-sdk-11.0.2\lib"
+
+// Compile Controllers
+
+javac --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml -cp . controller/*.java
+-
+// Compile Driver
+
+javac --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml ./driver/Driver.java
+
+// Run
+
+java --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml driver.Driver
