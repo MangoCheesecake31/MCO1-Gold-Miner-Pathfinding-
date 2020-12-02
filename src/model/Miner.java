@@ -1,3 +1,5 @@
+package model;
+
 public class Miner {
     // // // // // Attributes
     public int x = 0;

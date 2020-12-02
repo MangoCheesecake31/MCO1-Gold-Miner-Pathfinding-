@@ -1,3 +1,5 @@
+package model;
+
 public class Grid {
 	// // // // // Attributes
 	public final int size;

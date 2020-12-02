@@ -1,3 +1,5 @@
-public class MenuController {
+package controller;
 
+public class MenuController {
+	
 } 
