@@ -15,11 +15,11 @@ xcopy src\view out\view /i
 cd src
 
 :: Compile all contorller classes with javafx
-javac --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml -d ../out controller/*.java
+javac --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml,javafx.graphics -d ../out controller/*.java
 
 :: Compile DriverGUI with javafx
-javac --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml -d ../out driver/DriverGUI.java
+javac --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml,javafx.graphics -d ../out driver/DriverGUI.java
 
 :: Run DriverGUI
-java --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml -cp ../out driver.DriverGUI
+java --module-path %PATH_TO_FX% --add-modules javafx.controls,javafx.fxml,javafx.graphics -cp ../out driver.DriverGUI
 :: End	

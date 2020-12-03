@@ -21,7 +21,7 @@
             <Font name="Papyrus" size="70.0" />
          </font>
       </Label>
-      <Button id="randomStartButton" contentDisplay="CENTER" layoutX="236.0" layoutY="258.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="269.0" style="-fx-background-color: EMPTY;" text="Random" textFill="#d1d348">
+      <Button id="randomStartButton" contentDisplay="CENTER" layoutX="236.0" layoutY="258.0" mnemonicParsing="false" onAction="#onRandomButtonClick" prefHeight="58.0" prefWidth="269.0" style="-fx-background-color: EMPTY;" text="Random" textFill="#d1d348">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -32,15 +32,7 @@
             <Glow />
          </effect>
       </Button>
-      <Button id="smartStartButton" layoutX="236.0" layoutY="341.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="269.0" style="-fx-background-color: EMPTY;" text="Smart" textFill="#d1d348">
-         <font>
-            <Font name="Papyrus" size="25.0" />
-         </font>
-         <effect>
-            <Glow />
-         </effect>
-      </Button>
-      <Button id="smartStartButton" layoutX="236.0" layoutY="425.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="269.0" style="-fx-background-color: EMPTY;" text="Exit" textFill="#d1d348">
+      <Button id="smartStartButton" layoutX="236.0" layoutY="341.0" mnemonicParsing="false" onAction="#onSmartButtonClick" prefHeight="58.0" prefWidth="269.0" style="-fx-background-color: EMPTY;" text="Smart" textFill="#d1d348">
          <font>
             <Font name="Papyrus" size="25.0" />
          </font>
