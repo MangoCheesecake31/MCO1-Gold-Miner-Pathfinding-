@@ -5,10 +5,13 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.io.File;
 
 public class MainController {
 	// // // Attributes
 	private Stage primaryStage;
+	protected File filepath;
+	protected String gamemode;
 
 	public static final int MAIN_VIEW = 1;
 	public static final int GAME_VIEW = 2;
@@ -54,5 +57,13 @@ public class MainController {
 
         // Display
         primaryStage.show();
+	}
+
+	public void setGameMode(String mode) {
+		gamemode = mode;
+	}
+
+	public void setFilePath(File file) {
+		filepath = file;
 	}
 }
