@@ -57,6 +57,7 @@ public class GameController extends Controller {
     public final String EMPTY_URL = "/resources/empty.png";
     public final String BEACON_URL = "/resources/lighthouse.png";
 
+    private int beacon_distance;
     private double speed = 1;
     private Grid map;
     private Miner agent;
@@ -105,11 +106,7 @@ public class GameController extends Controller {
         }
 
         // Player (Auto)
-
-        // ADD MODE mainController.GAMEMODE
-        auto = new Player(map);
-
-
+        auto = new Player(map, beacon_distance, mainController.gamemode);
     }
 
     public void updateCell(int x, int y) {
@@ -129,6 +126,9 @@ public class GameController extends Controller {
             int cell_x = sc.nextInt();
             int cell_y = sc.nextInt();
             String type;
+            beacon_distance = sc.nextInt();
+
+            System.out.println("X" + cell_x + "Y" + cell_y + "B" + beacon_distance);
 
             // Grid Instance
             map = new Grid(map_size);
