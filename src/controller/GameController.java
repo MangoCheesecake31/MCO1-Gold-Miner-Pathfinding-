@@ -128,7 +128,6 @@ public class GameController extends Controller {
             String type;
             beacon_distance = sc.nextInt();
 
-            System.out.println("X" + cell_x + "Y" + cell_y + "B" + beacon_distance);
 
             // Grid Instance
             map = new Grid(map_size);

@@ -16,6 +16,7 @@ public class Driver {
 		String type;
 		int distance_of_beacon_to_gold = sc.nextInt();
 
+
 		// Grid Instance
 		Grid map = new Grid(map_size);
 		map.updateCell(cell_x, cell_y, "GOLD", "GOLD");
@@ -75,7 +76,8 @@ public class Driver {
 			}
 		} else if (mode == 'A') {
 			// Auto Controlled
-			Player auto = new Player(map, distance_of_beacon_to_gold, "RANDOM");
+			System.out.println(distance_of_beacon_to_gold);
+			Player auto = new Player(map, distance_of_beacon_to_gold, "SMART");
 
 			while (true) {
 				System.out.println("| ------------------------------ MCO1 Gold Miner ------------------------------ |");
@@ -110,7 +112,7 @@ public class Driver {
 						break;
 				}
 
-				cls();
+				//cls();
 			}
 		}
 	}

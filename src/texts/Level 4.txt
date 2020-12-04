@@ -1,0 +1,7 @@
+8 5
+1 6 1
+1 7 BEACON
+4 4 PIT
+2 4 PIT
+1 1 PIT
+5 5 PIT

@@ -224,10 +224,9 @@ public class Player {
 		// 4 Directions, 4 Beelines, 4 Backtracks
 		for (int i = 0; i < 4; i++) {
 
-			System.out.println(beacon_distance);
 			moved = 0;
 			// Beeline till you hit something or max distance
-			for (int j = 0; i < beacon_distance; j++) {
+			for (int j = 0; j < beacon_distance; j++) {
 
 				// Scan for obstacles (Pit or Edge)
 				move_queue.add('S');
@@ -252,6 +251,12 @@ public class Player {
 			String initialDirection = agent.getFront();
 			for (int j = 0; j < moved; j++) {
 				backTrackManeuver(initialDirection);
+
+			}
+
+			while (!(agent.getFront().equals(initialDirection))) {
+				agent.rotate();
+				move_queue.add('R');
 			}
 
 			// Rotate and Beeline next direction
