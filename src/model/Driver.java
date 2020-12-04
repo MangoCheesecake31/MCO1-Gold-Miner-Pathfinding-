@@ -16,6 +16,7 @@ public class Driver {
 		int cell_x = sc.nextInt();
 		int cell_y = sc.nextInt();
 		String type;
+		int distance_of_beacon_to_gold = sc.nextInt();
 
 		// Grid Instance
 		Grid map = new Grid(map_size);
@@ -71,12 +72,12 @@ public class Driver {
 						break;
 					default:
 				}
-				
+
 				cls();
 			}
 		} else if (mode == 'A') {
 			// Auto Controlled
-			Player auto = new Player(map);
+			Player auto = new Player(map, distance_of_beacon_to_gold, "RANDOM");
 
 			while (true) {
 				System.out.println("| ------------------------------ MCO1 Gold Miner ------------------------------ |");
@@ -110,17 +111,17 @@ public class Driver {
 						System.exit(0);
 						break;
 				}
-				
+
 				cls();
 			}
 		}
 	}
 
 	public static void cls() {
-    	try {
-		    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-    	} catch (Exception e) {
-    		System.out.println("XD");
-    	}
-    }
+		try {
+			new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+		} catch (Exception e) {
+			System.out.println("XD");
+		}
+	}
 }

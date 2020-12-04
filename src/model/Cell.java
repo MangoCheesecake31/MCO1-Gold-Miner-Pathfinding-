@@ -29,7 +29,7 @@ public class Cell {
 			}
 		}
 
-		System.out.println("An Error has Occured: Invalid Cell Types! (" + type + ")");
+		System.out.println("An Error has Occurred: Invalid Cell Types! (" + type + ")");
 	}
 
 	public String getType() {

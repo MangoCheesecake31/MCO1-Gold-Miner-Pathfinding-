@@ -2,7 +2,7 @@
 @ECHO OFF
 
 :: Set FX Library Path
-set PATH_TO_FX="C:\Program Files\Java\javafx-sdk-11.0.2\lib"
+set PATH_TO_FX="C:\Program Files\Java\javafx-sdk-15.0.1\lib"
 
 :: Change directory
 cd..

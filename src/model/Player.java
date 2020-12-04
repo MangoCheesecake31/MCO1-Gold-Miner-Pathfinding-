@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Collections;
+import java.util.Random;
 
 public class Player {
 	// // // Attributes
@@ -12,10 +13,10 @@ public class Player {
 	private boolean[][] traversed;
 	private LinkedList<Character> move_queue;
 	private LinkedList<String> previous_moves;
-
+	private int beacon_distance;
 
 	// // // Constructors
-	public Player(Grid map) {
+	public Player(Grid map, int beacon_distance, String mode) {
 		move_queue = new LinkedList<>();
 		copy = new Grid(map.getSize());
 		traversed = new boolean[map.getSize()][map.getSize()];
@@ -31,18 +32,29 @@ public class Player {
 			}
 		}
 
+		setDistanceOfBeaconToGold(beacon_distance);
+
 		agent = new Miner(copy);
-		auto();
+
+		if (mode.toUpperCase().equals("SMART")) {
+			smart();
+		} else {
+			random();
+		}
+	}
+
+	public void setDistanceOfBeaconToGold(int distance) {
+		this.beacon_distance = distance;
 	}
 
 
 	// // // Methods
-	public void auto() {
+	// to be renamed as smart mode
+	public void smart() {
 		previous_moves = new LinkedList<>();
 		String scanned;
 		ArrayList<String> possible_moves;
 		ArrayList<Integer> move_precedence;
-		int beacon_distance = 0;
 		int highest_precedence = 0;
 
 		while (!(agent.checkWin() || agent.checkLose())) {
@@ -70,11 +82,12 @@ public class Player {
 						break;
 
 					} else if (scanned.equals("BEACON")) {
-						possible_moves.add(agent.getFront());
-						move_precedence.add(3);
-						break;
+						// Move to Beacon
+						moveManeuver(agent.getFront());
 
-						// TODO GET BEACON DATA
+						// Beacon Case Maneuvers
+						foundBeaconManeuver();
+						return;
 
 					} else if (!(scanned.equals("PIT"))) {
 						// Check Traversed Cells
@@ -127,13 +140,45 @@ public class Player {
 				backTrackManeuver(previous_moves.pop());
 			}
 		}
-		
-		System.out.println("Auto Moves Complete!");
+
+		System.out.println("smart Moves Complete!");
+	}
+
+	public void random() {
+		Random rng = new Random();
+		previous_moves = new LinkedList<>();
+		int MAX_ITR = 5000;
+
+		// TODO integrate scanned data to GUI
+		// TODO moving to null cases
+
+		while (0 < MAX_ITR) {
+
+			switch (rng.nextInt(3)) {
+				case 0 -> {
+					moveManeuver(agent.getFront());
+				}
+
+				case 1 -> {
+					agent.scan();
+					move_queue.add('S');
+				}
+
+				case 2 -> {
+					agent.rotate();
+					move_queue.add('R');
+				}
+			}
+
+			if (agent.checkWin() || agent.checkLose()) {
+				break;
+			}
+		}
 	}
 
 	public void backTrackManeuver(String previous) {
 		String back_track = Miner.DIRECTIONS[(directionIndexOf(previous) + 2) % 4];
-		
+
 		while (!(back_track.equals(agent.getFront()))) {
 			agent.rotate();
 			move_queue.add('R');
@@ -156,6 +201,7 @@ public class Player {
 
 		agent.move();
 		move_queue.add('M');
+
 	}
 
 	public char getNextMove() {
@@ -169,5 +215,48 @@ public class Player {
 			}
 		}
 		return -1;
+	}
+
+	public void foundBeaconManeuver() {
+		// Fresh
+		int moved;
+
+		// 4 Directions, 4 Beelines, 4 Backtracks
+		for (int i = 0; i < 4; i++) {
+
+			System.out.println(beacon_distance);
+			moved = 0;
+			// Beeline till you hit something or max distance
+			for (int j = 0; i < beacon_distance; j++) {
+
+				// Scan for obstacles (Pit or Edge)
+				move_queue.add('S');
+				if (agent.scan() != null && !(agent.scan().equals("PIT"))) {
+					// Move
+					moveManeuver(agent.getFront());
+					moved++;
+
+					// Check game over
+					if (agent.checkWin() || agent.checkLose()) {
+						// stop function
+						return;
+					}
+
+				} else {
+					// Stop moving
+					break;
+				}
+			}
+
+			// Walk back to beacon
+			String initialDirection = agent.getFront();
+			for (int j = 0; j < moved; j++) {
+				backTrackManeuver(initialDirection);
+			}
+
+			// Rotate and Beeline next direction
+			agent.rotate();
+			move_queue.add('R');
+		}
 	}
 }
