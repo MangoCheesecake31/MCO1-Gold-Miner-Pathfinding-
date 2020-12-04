@@ -10,6 +10,11 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import java.io.IOException;
 import javafx.scene.image.Image;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.animation.Animation;
+import javafx.util.Duration;
+
 
 public class GameController extends Controller {
 	// // // Attributes	
@@ -40,6 +45,11 @@ public class GameController extends Controller {
     @FXML
     private Label gameOverLabel = new Label();
 
+    @FXML
+    private Label lastScannedLabel = new Label();
+
+    @FXML
+    private Label speedCountLabel = new Label();
 
     public final String PIT_URL = "/resources/hole.png";
     public final String GOLD_URL = "/resources/gold-ingots.png";
@@ -47,18 +57,22 @@ public class GameController extends Controller {
     public final String EMPTY_URL = "/resources/empty.png";
     public final String BEACON_URL = "/resources/lighthouse.png";
 
-    private int speed = 1;
+    private double speed = 1;
     private Grid map;
     private Miner agent;
     private boolean started = false;
-    private GridPane grid_pane = new GridPane();
+    private boolean automated = false;
+    private GridPane grid_pane;
     private Player auto;
+    private Timeline timeline;
 
     // // // Methods
 	public void start() {
-        // Setup GridPane to ScrollPane 
+        // Setup GridPane to ScrollPane
+        grid_pane = new GridPane(); 
         grid_pane.setGridLinesVisible(true);
         gridScrollPane.setContent(grid_pane);
+        gameOverLabel.setOpacity(0); 
 
         // Read map
         readFile();
@@ -91,63 +105,11 @@ public class GameController extends Controller {
         }
 
         // Player (Auto)
+
+        // ADD MODE mainController.GAMEMODE
         auto = new Player(map);
 
-        while (true) {
-            // Status
-            if (agent.checkWin()) {
-                gameOverLabel.setText("You Win!");
-                System.out.println("You Win! You found the gold :)");
-                gameOverLabel.setOpacity(1.0);
-                break;
-            } else if (agent.checkLose()) {
-                gameOverLabel.setText("You Lose!");
-                System.out.println("You Lose! You fell into a pit :(");
-                gameOverLabel.setOpacity(1.0);
-                break;
-            }
 
-            // Controls
-            String scanned; // TEMPORARY
-            switch (auto.getNextMove()) {
-                case 'M': agent.move();
-                    // Update images
-                    switch (agent.getFront()) {
-                        case "UP"    -> {
-                            updateCell(agent.x, agent.y);
-                            updateCell(agent.x, agent.y + 1);
-                        }
-
-                        case "RIGHT" -> {
-                            updateCell(agent.x, agent.y);
-                            updateCell(agent.x - 1, agent.y);
-                        }
-
-                        case "DOWN" -> {
-                            updateCell(agent.x, agent.y);
-                            updateCell(agent.x, agent.y - 1);
-                        }
-
-                        case "LEFT" -> {
-                            updateCell(agent.x, agent.y);
-                            updateCell(agent.x + 1, agent.y);
-                        }
-                    }
-                    break;
-                case 'R': agent.rotate();
-                    updateCell(agent.x, agent.y);
-                    break;
-                case 'S': scanned = agent.scan();
-                    // LAbel
-                    break;
-            }
-
-            // Update counters (Dashboard)
-            scanCountLabel.setText(Integer.toString(agent.getScanCount())); 
-            moveCountLabel.setText(Integer.toString(agent.getMoveCount()));
-            rotateCountLabel.setText(Integer.toString(agent.getRotateCount())); 
-            totalCountLabel.setText(Integer.toString(agent.getScanCount() + agent.getMoveCount() + agent.getRotateCount())); 
-        }
     }
 
     public void updateCell(int x, int y) {
@@ -188,17 +150,132 @@ public class GameController extends Controller {
 
     // // // Events
     @FXML
-    void onStartButtonClick(Event event) {
+    public void onStartButtonClick() {
         if (!(started)) {
+            // Start button
             start();
             started = true;
-            startButton.setText("");
-        } 
+            startButton.setText("Next");
+
+        } else {
+            // Next button
+            System.out.println("Next Move");
+
+            // Status
+            if (agent.checkWin()) {
+                gameOverLabel.setText("You Win!");
+                System.out.println("You Win! You found the gold :)");
+                gameOverLabel.setOpacity(1.0);
+
+                if (automated) {
+                    timeline.stop();
+                }
+               
+                // Restart
+                started = false;
+                automated = false;
+                startButton.setText("Start");
+                return;
+
+            } else if (agent.checkLose()) {
+                gameOverLabel.setText("You Lose!");
+                System.out.println("You Lose! You fell into a pit :(");
+                gameOverLabel.setOpacity(1.0);
+
+                if (automated) {
+                    timeline.stop();
+                }
+
+                // Restart
+                started = false;
+                automated = false;
+                startButton.setText("Start");
+                return;
+            }
+
+            // Controls
+            String scanned;
+            switch (auto.getNextMove()) {   
+                // Move
+                case 'M' -> {
+                    agent.move();
+
+                    // Update images based on direction
+                    switch (agent.getFront()) {
+                        case "UP"    -> {
+                            updateCell(agent.x, agent.y);
+                            updateCell(agent.x, agent.y + 1);
+                        }
+
+                        case "RIGHT" -> {
+                            updateCell(agent.x, agent.y);
+                            updateCell(agent.x - 1, agent.y);
+                        }
+
+                        case "DOWN" -> {
+                            updateCell(agent.x, agent.y);
+                            updateCell(agent.x, agent.y - 1);
+                        }
+
+                        case "LEFT" -> {
+                            updateCell(agent.x, agent.y);
+                            updateCell(agent.x + 1, agent.y);
+                        }
+                    }
+                } 
+                    
+                // Rotate
+                case 'R' -> {
+                    agent.rotate();
+                    updateCell(agent.x, agent.y);
+                }
+
+                // Scan
+                case 'S' -> {
+                    scanned = agent.scan();
+                    // Update Scanned ImageView
+                    if (scanned != null) {
+                        lastScannedLabel.setText(scanned);
+
+                    } else {     
+                        lastScannedLabel.setText("EDGE");
+
+                    }
+                } 
+            }
+
+            // Update counters (Dashboard)
+            scanCountLabel.setText(Integer.toString(agent.getScanCount())); 
+            moveCountLabel.setText(Integer.toString(agent.getMoveCount()));
+            rotateCountLabel.setText(Integer.toString(agent.getRotateCount())); 
+            totalCountLabel.setText(Integer.toString(agent.getScanCount() + agent.getMoveCount() + agent.getRotateCount())); 
+        }
     }
 
     @FXML
-    void onBackButtonClick(Event event) {
+    public void onBackButtonClick(Event event) {
+        if (automated) {
+            timeline.stop();
+        }
+
         mainController.changeScene(mainController.MAIN_VIEW);
+    }
+
+    @FXML
+    public void onAutoButtonClick() {
+        // Timeline
+        if (!(automated) ) {
+            // Get Speed
+            speed = speedSlider.getValue();
+            speedCountLabel.setText(Double.toString(speed));
+
+            timeline = new Timeline(new KeyFrame(Duration.millis(1000 - (speed - 1) * 100), event -> onStartButtonClick()));
+            
+            System.out.println("Automatic Mode");
+            automated = true;
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        }
     }
 
     // Creates an instance of a ImageView object that is resized to fit the GUI
