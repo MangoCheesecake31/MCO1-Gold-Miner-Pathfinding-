@@ -54,6 +54,10 @@ public class GameController extends Controller {
     public final String PIT_URL = "/resources/hole.png";
     public final String GOLD_URL = "/resources/gold-ingots.png";
     public final String MINER_URL = "/resources/miner.png";
+    public final String MINER_RIGHT_URL = "/resources/miner-right.png";
+    public final String MINER_UP_URL = "/resources/miner-up.png";
+    public final String MINER_DOWN_URL = "/resources/miner-down.png";
+    public final String MINER_LEFT_URL = "/resources/miner-left.png";
     public final String EMPTY_URL = "/resources/empty.png";
     public final String BEACON_URL = "/resources/lighthouse.png";
 
@@ -305,12 +309,18 @@ public class GameController extends Controller {
 
     private String getTypeURL(String type) {
         switch (type) {
-            case "PIT":     return PIT_URL;
-            case "GOLD":    return GOLD_URL;
-            case "MINER":   return MINER_URL;
-            case "EMPTY":   return EMPTY_URL;
-            case "BEACON":  return BEACON_URL;
-            default:        return " ";
+            case "PIT":    return PIT_URL;
+            case "GOLD":   return GOLD_URL;
+            case "MINER":
+                switch (agent.getFront()) {
+                    case "UP":    return MINER_UP_URL;
+                    case "DOWN":  return MINER_DOWN_URL;
+                    case "LEFT":  return MINER_LEFT_URL;
+                    case "RIGHT": return MINER_RIGHT_URL; 
+                }
+            case "EMPTY":  return EMPTY_URL;
+            case "BEACON": return BEACON_URL;
+            default:       return " ";
         }
     }
 } 
