@@ -67,6 +67,7 @@ public class GameController extends Controller {
     private Miner agent;
     private boolean started = false;
     private boolean automated = false;
+    private boolean stuck = false;
     private GridPane grid_pane;
     private Player auto;
     private Timeline timeline;
@@ -194,6 +195,21 @@ public class GameController extends Controller {
                 automated = false;
                 startButton.setText("Start");
                 return;
+            } else if (stuck) {
+                gameOverLabel.setText("Impossible!");
+                System.out.println("No More Available Moves Gold cannot be reached");
+                gameOverLabel.setOpacity(1.0);
+
+                if (automated) {
+                    timeline.stop();
+                }
+
+                // Restart
+                started = false;
+                automated = false;
+                stuck = false;
+                startButton.setText("Start");
+                return;
             }
 
             // Controls
@@ -245,6 +261,11 @@ public class GameController extends Controller {
 
                     }
                 } 
+
+                // No More Available Moves
+                case 'X' -> {
+                    stuck = true;
+                }
             }
 
             // Update counters (Dashboard)

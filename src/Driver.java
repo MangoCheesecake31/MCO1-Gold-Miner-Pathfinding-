@@ -65,6 +65,10 @@ public class Driver {
 						break;
 					case 'S': scanned = player.scan();
 						break;
+					case 'X':
+						System.out.println("No More Available Moves (Gold cannot be reached)...");
+						System.exit(0);
+						break;
 					case 'E':
 						System.out.println("Terminating Program...");
 						System.exit(0);
@@ -106,13 +110,17 @@ public class Driver {
 						break;
 					case 'S': scanned = player.scan();
 						break;
+					case 'X':
+						System.out.println("No More Available Moves (Gold cannot be reached)...");
+						System.exit(0);
+						break;
 					case 'E':
 						System.out.println("Terminating Program...");
 						System.exit(0);
 						break;
 				}
 
-				//cls();
+				cls();
 			}
 		}
 	}

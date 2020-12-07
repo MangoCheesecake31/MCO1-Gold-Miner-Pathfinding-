@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Collections;
 import java.util.Random;
+import java.util.NoSuchElementException;
 
 public class Player {
 	// // // Attributes
@@ -136,12 +137,19 @@ public class Player {
 				moveManeuver(possible_moves.get(move_precedence.indexOf(highest_precedence)));
 
 			} else {
-				// Back Track
-				backTrackManeuver(previous_moves.pop());
+				try {
+					// Back Track
+					backTrackManeuver(previous_moves.pop());
+
+				} catch (NoSuchElementException e) {
+					// Run out of moves (Impossible to get to the gold)
+					move_queue.add('X');
+					return;
+				}
 			}
 		}
 
-		System.out.println("smart Moves Complete!");
+		System.out.println("Smart Moves Complete!");
 	}
 
 	public void random() {
@@ -174,6 +182,8 @@ public class Player {
 				break;
 			}
 		}
+
+		System.out.println("Random Moves Complete!");
 	}
 
 	public void backTrackManeuver(String previous) {
