@@ -7,7 +7,7 @@ set PATH_TO_FX="C:\Program Files\Java\javafx-sdk-11.0.2\lib"
 :: Change directory
 cd..
 
-:: Copy resources
+:: Copy resources to out folder
 xcopy src\resources out\resources /i 
 xcopy src\view out\view /i
 
